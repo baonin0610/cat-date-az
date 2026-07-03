@@ -1008,6 +1008,20 @@ header {
     gap: 0;
   }
   
+  .input-date, .input-textarea, .input-text {
+    font-size: 16px !important; /* Prevents iOS auto-zoom */
+  }
+
+  .selector-card, .btn {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  .card-selector {
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    gap: 6px;
+  }
+
   .app-container {
     padding: 30px 20px;
     min-height: 440px;

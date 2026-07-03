@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const summaryActivity = document.getElementById('summary-activity');
   const summaryTreat = document.getElementById('summary-treat');
   const summaryNote = document.getElementById('summary-note');
+  const keyInput = document.getElementById('key-input');
   
   // Intro cat & text
   const introCat = document.getElementById('intro-cat');
@@ -37,6 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let yesScale = 1;
   let selectedActivity = 'Cà phê mèo ☕';
   let selectedTreat = 'Trà sữa béo ngậy 🧋';
+
+  // Read URL parameters for notifications
+  const urlParams = new URLSearchParams(window.location.search);
+  const web3Key = urlParams.get('key');
 
   const sadPhrases = [
     "Ơ kìa...",
@@ -244,6 +249,26 @@ document.addEventListener('DOMContentLoaded', () => {
     summaryTreat.innerText = selectedTreat;
     summaryNote.innerText = notesVal ? `"${notesVal}"` : "Không có lời nhắn nào.";
 
+    // Send email notification if Web3Forms key is in the URL
+    if (web3Key) {
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: web3Key,
+          subject: '🐱 Lịch hẹn hò mới từ bạn gái!',
+          from_name: 'Dating Cat Invite',
+          message: `Lịch hẹn hò của bạn đã được xác nhận!\n\n📅 Ngày hẹn: ${formattedDate}\n⏰ Giờ đón: ${rawTime || "Chưa chọn"}\n📍 Hoạt động: ${selectedActivity}\n😋 Ăn uống: ${selectedTreat}\n💌 Lời nhắn: ${notesVal || "Không có lời nhắn nào."}`
+        })
+      })
+      .then(res => res.json())
+      .then(data => console.log('Notification sent:', data))
+      .catch(err => console.error('Error sending notification:', err));
+    }
+
     // Show success screen
     plannerScreen.classList.remove('active');
     setTimeout(() => {
@@ -339,8 +364,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize QR generator
   function updateQRCodes(url) {
+    const keyVal = keyInput ? keyInput.value.trim() : '';
+    let finalUrl = url;
+    
+    // Strip existing key from url if present to avoid double keys
+    if (finalUrl.includes('key=')) {
+      try {
+        const urlObj = new URL(finalUrl);
+        urlObj.searchParams.delete('key');
+        finalUrl = urlObj.toString();
+      } catch (e) {
+        // Fallback for simple paths
+        finalUrl = finalUrl.split('?')[0];
+      }
+    }
+    
+    if (keyVal) {
+      const separator = finalUrl.includes('?') ? '&' : '?';
+      finalUrl = `${finalUrl}${separator}key=${encodeURIComponent(keyVal)}`;
+    }
+
     const qrConfig = {
-      value: url,
+      value: finalUrl,
       size: 250,
       background: 'white',
       foreground: '#c9184a',
@@ -360,14 +405,19 @@ document.addEventListener('DOMContentLoaded', () => {
         size: 250
       });
     } else {
-      qrPreview.value = url;
-      qrPrint.value = url;
+      qrPreview.value = finalUrl;
+      qrPrint.value = finalUrl;
     }
   }
 
   // Open settings
   settingsBtn.addEventListener('click', () => {
     printModal.classList.add('active');
+    
+    // Populate saved key
+    if (keyInput) {
+      keyInput.value = localStorage.getItem('web3FormsKey') || '';
+    }
     
     // Default to current URL
     const currentURL = window.location.href;
@@ -387,6 +437,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const val = urlInput.value.trim() || window.location.href;
     updateQRCodes(val);
   });
+
+  // Update QR on Key change
+  if (keyInput) {
+    keyInput.addEventListener('input', () => {
+      localStorage.setItem('web3FormsKey', keyInput.value.trim());
+      const val = urlInput.value.trim() || window.location.href;
+      updateQRCodes(val);
+    });
+  }
 
   // Close modal
   modalCloseBtn.addEventListener('click', () => {
