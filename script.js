@@ -277,8 +277,32 @@ document.addEventListener('DOMContentLoaded', () => {
     let dd = today.getDate();
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
-    dateInput.min = `${yyyy}-${mm}-${dd}`;
-    dateInput.value = `${yyyy}-${mm}-${dd}`; // Set today as default
+    
+    // Set initial friendly text value
+    dateInput.value = `${dd}/${mm}/${yyyy}`;
+
+    // On focus: convert to native date type and format value to yyyy-mm-dd
+    dateInput.addEventListener('focus', () => {
+      let val = dateInput.value;
+      if (val && val.includes('/')) {
+        const parts = val.split('/');
+        dateInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+      dateInput.type = 'date';
+      dateInput.min = `${yyyy}-${mm}-${dd}`;
+    });
+
+    // On blur: convert back to friendly text format dd/mm/yyyy
+    dateInput.addEventListener('blur', () => {
+      let val = dateInput.value;
+      if (val && val.includes('-')) {
+        const parts = val.split('-');
+        dateInput.type = 'text';
+        dateInput.value = `${parts[2]}/${parts[1]}/${parts[0]}`;
+      } else if (!val) {
+        dateInput.type = 'text';
+      }
+    });
   }
 
   // --- Planner Form Submit ---
@@ -294,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Format date beautifully (dd/mm/yyyy)
       let formattedDate = rawDate;
-      if (rawDate) {
+      if (rawDate && rawDate.includes('-')) {
         const parts = rawDate.split('-');
         formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
       }
