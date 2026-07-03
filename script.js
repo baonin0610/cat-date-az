@@ -227,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     
     const rawDate = dateInput.value;
+    const rawTime = document.getElementById('time-input').value;
     const notesVal = document.getElementById('note-input').value.trim();
 
     // Format date beautifully (dd/mm/yyyy)
@@ -238,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set summary
     summaryDate.innerText = formattedDate;
+    document.getElementById('summary-time').innerText = rawTime || "Chưa chọn";
     summaryActivity.innerText = selectedActivity;
     summaryTreat.innerText = selectedTreat;
     summaryNote.innerText = notesVal ? `"${notesVal}"` : "Không có lời nhắn nào.";
@@ -259,11 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Share confirmation / Zalo format ---
   btnSendMessage.addEventListener('click', () => {
     const date = summaryDate.innerText;
+    const time = document.getElementById('summary-time').innerText;
     const activity = summaryActivity.innerText;
     const treat = summaryTreat.innerText;
     const note = summaryNote.innerText;
 
-    const message = `Em đồng ý đi chơi rồi nhé! 🐱\nLịch trình:\n📅 Ngày: ${date}\n📍 Địa điểm: ${activity}\n😋 Ăn uống: ${treat}\n💌 Lời nhắn: ${note}\nHẹn gặp anh nha!`;
+    const message = `Em đồng ý đi chơi rồi nhé! 🐱\nLịch trình:\n📅 Ngày: ${date}\n⏰ Giờ đón: ${time}\n📍 Địa điểm: ${activity}\n😋 Ăn uống: ${treat}\n💌 Lời nhắn: ${note}\nHẹn gặp anh nha!`;
 
     // Copy to clipboard
     navigator.clipboard.writeText(message).then(() => {
@@ -290,6 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btnNo.style.position = 'static';
     btnNo.style.left = 'auto';
     btnNo.style.top = 'auto';
+    
+    // Reset form fields
+    document.getElementById('time-input').value = "";
     
     // Reset proposal text & cat face
     proposalTitle.innerText = "Đi chơi với anh nha? 🐱";

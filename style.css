@@ -411,8 +411,15 @@ header {
   text-align: left;
 }
 
+.form-group-row {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
 .form-group {
   margin-bottom: 20px;
+  flex: 1;
 }
 
 .form-group label {
@@ -994,6 +1001,11 @@ header {
 @media (max-width: 480px) {
   body {
     padding: 12px;
+  }
+  
+  .form-group-row {
+    flex-direction: column;
+    gap: 0;
   }
   
   .app-container {
