@@ -510,7 +510,14 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Default to current URL
       if (urlInput) {
-        const currentURL = window.location.href;
+        let currentURL = window.location.href;
+        try {
+          const urlObj = new URL(currentURL);
+          urlObj.searchParams.set('t', Date.now());
+          currentURL = urlObj.toString();
+        } catch (e) {
+          console.warn('URL parsing failed:', e);
+        }
         urlInput.value = currentURL;
         updateQRCodes(currentURL);
       }
@@ -520,7 +527,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Use current URL button
   if (btnUseCurrent && urlInput) {
     btnUseCurrent.addEventListener('click', () => {
-      const currentURL = window.location.href;
+      let currentURL = window.location.href;
+      try {
+        const urlObj = new URL(currentURL);
+        urlObj.searchParams.set('t', Date.now());
+        currentURL = urlObj.toString();
+      } catch (e) {
+        console.warn('URL parsing failed:', e);
+      }
       urlInput.value = currentURL;
       updateQRCodes(currentURL);
     });
