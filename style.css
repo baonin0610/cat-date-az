@@ -434,6 +434,9 @@ header {
 /* Form Inputs */
 .input-date {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 12px 18px;
   border-radius: 16px;
   border: 2px solid var(--border);
@@ -1016,6 +1019,10 @@ header {
   
   .input-date, .input-textarea, .input-text {
     font-size: 16px !important; /* Prevents iOS auto-zoom */
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .selector-card, .btn {
