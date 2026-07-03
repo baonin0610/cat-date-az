@@ -182,23 +182,27 @@ document.addEventListener('DOMContentLoaded', () => {
     btnNo.style.zIndex = '10';
   }
 
-  btnNo.addEventListener('mouseover', fleeNoButton);
-  btnNo.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevent double triggers on mobile touch
-    fleeNoButton();
-  });
+  if (btnNo) {
+    btnNo.addEventListener('mouseover', fleeNoButton);
+    btnNo.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevent double triggers on mobile touch
+      fleeNoButton();
+    });
+  }
 
   // --- YES Button Trigger ---
-  btnYes.addEventListener('click', () => {
-    // Fire beautiful confetti
-    fireConfetti();
+  if (btnYes) {
+    btnYes.addEventListener('click', () => {
+      // Fire beautiful confetti
+      fireConfetti();
 
-    // Fade screens
-    introScreen.classList.remove('active');
-    setTimeout(() => {
-      plannerScreen.classList.add('active');
-    }, 300);
-  });
+      // Fade screens
+      if (introScreen) introScreen.classList.remove('active');
+      setTimeout(() => {
+        if (plannerScreen) plannerScreen.classList.add('active');
+      }, 300);
+    });
+  }
 
   // Confetti helper
   function fireConfetti() {
@@ -234,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Cards selection (Activity & Treat) ---
   function initSelector(selectorId, callback) {
     const selector = document.getElementById(selectorId);
+    if (!selector) return;
     const cards = selector.querySelectorAll('.selector-card');
     
     cards.forEach(card => {
@@ -255,124 +260,138 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Set default minimum date to today
   const dateInput = document.getElementById('date-input');
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  let mm = today.getMonth() + 1; // Months start at 0
-  let dd = today.getDate();
-  if (dd < 10) dd = '0' + dd;
-  if (mm < 10) mm = '0' + mm;
-  dateInput.min = `${yyyy}-${mm}-${dd}`;
-  dateInput.value = `${yyyy}-${mm}-${dd}`; // Set today as default
+  if (dateInput) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0
+    let dd = today.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    dateInput.min = `${yyyy}-${mm}-${dd}`;
+    dateInput.value = `${yyyy}-${mm}-${dd}`; // Set today as default
+  }
 
   // --- Planner Form Submit ---
-  dateForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const rawDate = dateInput.value;
-    const rawTime = document.getElementById('time-input').value;
-    const notesVal = document.getElementById('note-input').value.trim();
+  if (dateForm) {
+    dateForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const rawDate = dateInput ? dateInput.value : '';
+      const timeEl = document.getElementById('time-input');
+      const rawTime = timeEl ? timeEl.value : '';
+      const noteEl = document.getElementById('note-input');
+      const notesVal = noteEl ? noteEl.value.trim() : '';
 
-    // Format date beautifully (dd/mm/yyyy)
-    let formattedDate = rawDate;
-    if (rawDate) {
-      const parts = rawDate.split('-');
-      formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-
-    // Set summary
-    summaryDate.innerText = formattedDate;
-    document.getElementById('summary-time').innerText = rawTime || "Chưa chọn";
-    summaryActivity.innerText = selectedActivity;
-    summaryTreat.innerText = selectedTreat;
-    summaryNote.innerText = notesVal ? `"${notesVal}"` : "Không có lời nhắn nào.";
-
-    // Send email notification if Web3Forms key is in the URL
-    if (web3Key) {
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          access_key: web3Key,
-          subject: '🐱 Lịch hẹn hò mới từ bạn gái!',
-          from_name: 'Dating Cat Invite',
-          message: `Lịch hẹn hò của bạn đã được xác nhận!\n\n📅 Ngày hẹn: ${formattedDate}\n⏰ Giờ đón: ${rawTime || "Chưa chọn"}\n📍 Hoạt động: ${selectedActivity}\n😋 Ăn uống: ${selectedTreat}\n💌 Lời nhắn: ${notesVal || "Không có lời nhắn nào."}`
-        })
-      })
-      .then(res => res.json())
-      .then(data => console.log('Notification sent:', data))
-      .catch(err => console.error('Error sending notification:', err));
-    }
-
-    // Show success screen
-    plannerScreen.classList.remove('active');
-    setTimeout(() => {
-      successScreen.classList.add('active');
-      // Fire celebration confetti again!
-      if (typeof confetti !== 'undefined') {
-        confetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.6 },
-          colors: ['#ff8fa3', '#ffb3c1', '#ffe5ec', '#ff758f', '#ff4d6d']
-        });
+      // Format date beautifully (dd/mm/yyyy)
+      let formattedDate = rawDate;
+      if (rawDate) {
+        const parts = rawDate.split('-');
+        formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
       }
-    }, 300);
-  });
+
+      // Set summary
+      if (summaryDate) summaryDate.innerText = formattedDate;
+      const summaryTimeEl = document.getElementById('summary-time');
+      if (summaryTimeEl) summaryTimeEl.innerText = rawTime || "Chưa chọn";
+      if (summaryActivity) summaryActivity.innerText = selectedActivity;
+      if (summaryTreat) summaryTreat.innerText = selectedTreat;
+      if (summaryNote) summaryNote.innerText = notesVal ? `"${notesVal}"` : "Không có lời nhắn nào.";
+
+      // Send email notification if Web3Forms key is in the URL
+      if (web3Key) {
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            access_key: web3Key,
+            subject: '🐱 Lịch hẹn hò mới từ bạn gái!',
+            from_name: 'Dating Cat Invite',
+            message: `Lịch hẹn hò của bạn đã được xác nhận!\n\n📅 Ngày hẹn: ${formattedDate}\n⏰ Giờ đón: ${rawTime || "Chưa chọn"}\n📍 Hoạt động: ${selectedActivity}\n😋 Ăn uống: ${selectedTreat}\n💌 Lời nhắn: ${notesVal || "Không có lời nhắn nào."}`
+          })
+        })
+        .then(res => res.json())
+        .then(data => console.log('Notification sent:', data))
+        .catch(err => console.error('Error sending notification:', err));
+      }
+
+      // Show success screen
+      if (plannerScreen) plannerScreen.classList.remove('active');
+      setTimeout(() => {
+        if (successScreen) successScreen.classList.add('active');
+        // Fire celebration confetti again!
+        if (typeof confetti !== 'undefined') {
+          confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ['#ff8fa3', '#ffb3c1', '#ffe5ec', '#ff758f', '#ff4d6d']
+          });
+        }
+      }, 300);
+    });
+  }
 
 
 
   // --- Restart Date Selector ---
-  btnRestart.addEventListener('click', () => {
-    // Reset Proposal
-    noClickCount = 0;
-    yesScale = 1;
-    btnYes.style.transform = `scale(1)`;
-    btnNo.style.display = 'block';
-    btnNo.style.position = 'static';
-    btnNo.style.left = 'auto';
-    btnNo.style.top = 'auto';
-    
-    // Reset form fields
-    document.getElementById('time-input').value = "";
-    
-    // Reset proposal text & cat face
-    proposalTitle.innerText = "Đi chơi với anh nha? 🐱";
-    proposalSubtitle.innerText = "Cuối tuần này em rảnh không?";
-    
-    // Reset eyes
-    const eyesGroup = introCat.querySelector('.cat-eyes-group');
-    if (eyesGroup) {
-      eyesGroup.innerHTML = `
-        <!-- Left Eye -->
-        <g class="cat-eye-left">
-          <circle cx="74" cy="92" r="13" fill="#1a1a1a" />
-          <!-- Reflection Highlights -->
-          <circle cx="70" cy="87" r="4.5" fill="#ffffff" />
-          <circle cx="79" cy="98" r="2" fill="#ffffff" />
-        </g>
-        <!-- Right Eye -->
-        <g class="cat-eye-right">
-          <circle cx="126" cy="92" r="13" fill="#1a1a1a" />
-          <!-- Reflection Highlights -->
-          <circle cx="122" cy="87" r="4.5" fill="#ffffff" />
-          <circle cx="131" cy="98" r="2" fill="#ffffff" />
-        </g>
-      `;
-    }
-    const mouth = introCat.querySelector('.cat-mouth');
-    if (mouth) {
-      mouth.setAttribute('d', 'M 94 99 Q 97 103 100 100 Q 103 103 106 99');
-    }
+  if (btnRestart) {
+    btnRestart.addEventListener('click', () => {
+      // Reset Proposal
+      noClickCount = 0;
+      yesScale = 1;
+      if (btnYes) btnYes.style.transform = `scale(1)`;
+      if (btnNo) {
+        btnNo.style.display = 'block';
+        btnNo.style.position = 'static';
+        btnNo.style.left = 'auto';
+        btnNo.style.top = 'auto';
+      }
+      
+      // Reset form fields
+      const timeInputEl = document.getElementById('time-input');
+      if (timeInputEl) timeInputEl.value = "";
+      
+      // Reset proposal text & cat face
+      if (proposalTitle) proposalTitle.innerText = "Đi chơi với anh nha? 🐱";
+      if (proposalSubtitle) proposalSubtitle.innerText = "Cuối tuần này em rảnh không?";
+      
+      // Reset eyes
+      if (introCat) {
+        const eyesGroup = introCat.querySelector('.cat-eyes-group');
+        if (eyesGroup) {
+          eyesGroup.innerHTML = `
+            <!-- Left Eye -->
+            <g class="cat-eye-left">
+              <circle cx="74" cy="92" r="13" fill="#1a1a1a" />
+              <!-- Reflection Highlights -->
+              <circle cx="70" cy="87" r="4.5" fill="#ffffff" />
+              <circle cx="79" cy="98" r="2" fill="#ffffff" />
+            </g>
+            <!-- Right Eye -->
+            <g class="cat-eye-right">
+              <circle cx="126" cy="92" r="13" fill="#1a1a1a" />
+              <!-- Reflection Highlights -->
+              <circle cx="122" cy="87" r="4.5" fill="#ffffff" />
+              <circle cx="131" cy="98" r="2" fill="#ffffff" />
+            </g>
+          `;
+        }
+        const mouth = introCat.querySelector('.cat-mouth');
+        if (mouth) {
+          mouth.setAttribute('d', 'M 94 99 Q 97 103 100 100 Q 103 103 106 99');
+        }
+      }
 
-    // Switch screen
-    successScreen.classList.remove('active');
-    setTimeout(() => {
-      introScreen.classList.add('active');
-    }, 300);
-  });
+      // Switch screen
+      if (successScreen) successScreen.classList.remove('active');
+      setTimeout(() => {
+        if (introScreen) introScreen.classList.add('active');
+      }, 300);
+    });
+  }
 
   // --- Settings & Printable QR Card Generator ---
   let qrPreview = null;
