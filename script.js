@@ -43,6 +43,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const web3Key = urlParams.get('key') || '9f68c4bc-c89e-4cf2-bc28-33c66c04eebb';
 
+  // --- Birthday Birthday Message Birthday ---
+  const birthdayOverlay = document.getElementById('birthday-overlay');
+  const btnBirthdayClose = document.getElementById('btn-birthday-close');
+  
+  const today = new Date();
+  const isBirthday = (today.getDate() === 17 && today.getMonth() === 6); // July 17th (0-indexed month)
+  const isTestBirthday = urlParams.has('test_birthday');
+
+  if (birthdayOverlay && (isBirthday || isTestBirthday)) {
+    birthdayOverlay.classList.add('active');
+  }
+
+  if (btnBirthdayClose && birthdayOverlay) {
+    btnBirthdayClose.addEventListener('click', () => {
+      // Fire celebration confetti!
+      if (typeof confetti !== 'undefined') {
+        confetti({
+          particleCount: 180,
+          spread: 100,
+          origin: { y: 0.5 },
+          colors: ['#ff8fa3', '#ffb3c1', '#ffe5ec', '#ff758f', '#ff4d6d']
+        });
+      }
+      
+      // Smooth fade out
+      birthdayOverlay.style.opacity = '0';
+      setTimeout(() => {
+        birthdayOverlay.classList.remove('active');
+        birthdayOverlay.style.opacity = '1';
+      }, 500);
+    });
+  }
+
   const sadPhrases = [
     "Ơ kìa...",
     "Suy nghĩ lại đi mà...",
