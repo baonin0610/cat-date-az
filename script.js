@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedActivity = 'Cà phê mèo ☕';
   let selectedTreat = 'Trà sữa béo ngậy 🧋';
 
-  // Read URL parameters for notifications
+  // Read URL parameters for notifications (with default fallback key)
   const urlParams = new URLSearchParams(window.location.search);
-  const web3Key = urlParams.get('key');
+  const web3Key = urlParams.get('key') || '9f68c4bc-c89e-4cf2-bc28-33c66c04eebb';
 
   const sadPhrases = [
     "Ơ kìa...",
@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Populate saved key
     if (keyInput) {
-      keyInput.value = localStorage.getItem('web3FormsKey') || '';
+      keyInput.value = localStorage.getItem('web3FormsKey') || '9f68c4bc-c89e-4cf2-bc28-33c66c04eebb';
     }
     
     // Default to current URL
