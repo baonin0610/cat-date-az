@@ -1023,43 +1023,66 @@ header {
   }
 
   .app-container {
-    padding: 30px 20px;
+    padding: 24px 16px;
     min-height: 440px;
   }
 
+  .cat-illustration-box {
+    height: 110px;
+    margin-bottom: 10px;
+  }
+
+  .cat-svg {
+    max-height: 110px;
+  }
+
   .proposal-title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .proposal-subtitle {
     font-size: 14px;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
+  }
+
+  .planner-title {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .planner-subtitle {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    margin-bottom: 6px;
   }
 
   .btn {
-    font-size: 16px;
-    padding: 12px 20px;
+    font-size: 15px;
+    padding: 12px 16px;
   }
 
   .settings-btn span {
     display: none; /* Hide setting text on mobile, just show gear icon */
   }
-
-  .card-selector {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 8px;
-  }
   
   .selector-card {
-    padding: 8px;
+    padding: 6px;
   }
 
   .card-icon {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .card-text {
-    font-size: 11px;
+    font-size: 10.5px;
   }
 }
 
