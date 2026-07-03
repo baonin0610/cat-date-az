@@ -440,57 +440,81 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Open settings
-  settingsBtn.addEventListener('click', () => {
-    printModal.classList.add('active');
-    
-    // Populate saved key
-    if (keyInput) {
-      keyInput.value = localStorage.getItem('web3FormsKey') || '9f68c4bc-c89e-4cf2-bc28-33c66c04eebb';
-    }
-    
-    // Default to current URL
-    const currentURL = window.location.href;
-    urlInput.value = currentURL;
-    updateQRCodes(currentURL);
-  });
+  if (settingsBtn && printModal) {
+    settingsBtn.addEventListener('click', () => {
+      printModal.classList.add('active');
+      
+      // Populate saved key
+      if (keyInput) {
+        let savedKey = '';
+        try {
+          savedKey = localStorage.getItem('web3FormsKey');
+        } catch (e) {
+          console.warn('localStorage read is blocked:', e);
+        }
+        keyInput.value = savedKey || '9f68c4bc-c89e-4cf2-bc28-33c66c04eebb';
+      }
+      
+      // Default to current URL
+      if (urlInput) {
+        const currentURL = window.location.href;
+        urlInput.value = currentURL;
+        updateQRCodes(currentURL);
+      }
+    });
+  }
 
   // Use current URL button
-  btnUseCurrent.addEventListener('click', () => {
-    const currentURL = window.location.href;
-    urlInput.value = currentURL;
-    updateQRCodes(currentURL);
-  });
+  if (btnUseCurrent && urlInput) {
+    btnUseCurrent.addEventListener('click', () => {
+      const currentURL = window.location.href;
+      urlInput.value = currentURL;
+      updateQRCodes(currentURL);
+    });
+  }
 
   // Update QR on URL change
-  urlInput.addEventListener('input', () => {
-    const val = urlInput.value.trim() || window.location.href;
-    updateQRCodes(val);
-  });
+  if (urlInput) {
+    urlInput.addEventListener('input', () => {
+      const val = urlInput.value.trim() || window.location.href;
+      updateQRCodes(val);
+    });
+  }
 
   // Update QR on Key change
-  if (keyInput) {
+  if (keyInput && urlInput) {
     keyInput.addEventListener('input', () => {
-      localStorage.setItem('web3FormsKey', keyInput.value.trim());
+      try {
+        localStorage.setItem('web3FormsKey', keyInput.value.trim());
+      } catch (e) {
+        console.warn('localStorage write is blocked:', e);
+      }
       const val = urlInput.value.trim() || window.location.href;
       updateQRCodes(val);
     });
   }
 
   // Close modal
-  modalCloseBtn.addEventListener('click', () => {
-    printModal.classList.remove('active');
-  });
+  if (modalCloseBtn && printModal) {
+    modalCloseBtn.addEventListener('click', () => {
+      printModal.classList.remove('active');
+    });
+  }
 
   // Close modal on click outside
-  printModal.addEventListener('click', (e) => {
-    if (e.target === printModal) {
-      printModal.classList.remove('active');
-    }
-  });
+  if (printModal) {
+    printModal.addEventListener('click', (e) => {
+      if (e.target === printModal) {
+        printModal.classList.remove('active');
+      }
+    });
+  }
 
   // Print Card Action
-  btnPrintCard.addEventListener('click', () => {
-    // Trigger print dialog
-    window.print();
-  });
+  if (btnPrintCard) {
+    btnPrintCard.addEventListener('click', () => {
+      // Trigger print dialog
+      window.print();
+    });
+  }
 });
