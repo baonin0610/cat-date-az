@@ -47,11 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const birthdayOverlay = document.getElementById('birthday-overlay');
   const btnBirthdayClose = document.getElementById('btn-birthday-close');
   
-  const today = new Date();
-  const isBirthday = (today.getDate() === 17 && today.getMonth() === 6); // July 17th (0-indexed month)
-  const isTestBirthday = urlParams.has('test_birthday');
-
-  if (birthdayOverlay && (isBirthday || isTestBirthday)) {
+  // Always display birthday overlay on load as requested by user
+  if (birthdayOverlay) {
     birthdayOverlay.classList.add('active');
   }
 
