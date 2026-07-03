@@ -1006,6 +1006,12 @@ header {
   .form-group-row {
     flex-direction: column;
     gap: 0;
+    width: 100%;
+  }
+  
+  .form-group-row .form-group {
+    width: 100%;
+    flex: none;
   }
   
   .input-date, .input-textarea, .input-text {
