@@ -166,6 +166,39 @@ header {
   transform: translateY(0);
 }
 
+/* Video Screen Styles */
+.video-container {
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 16/9;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(255, 77, 109, 0.15);
+  border: 4px solid var(--primary-light);
+  background-color: #000;
+  margin: 15px 0;
+}
+
+#birthday-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-title {
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 22px;
+  color: var(--primary-dark);
+  margin-bottom: 5px;
+}
+
+.video-desc {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
 /* SCREEN 1: Proposal Intro */
 .cat-illustration-box {
   width: 180px;
@@ -1101,6 +1134,20 @@ header {
 
   .card-text {
     font-size: 10.5px;
+  }
+
+  .video-container {
+    max-width: 100%;
+    margin: 10px 0;
+  }
+  
+  .video-title {
+    font-size: 18px;
+  }
+  
+  .video-desc {
+    font-size: 13px;
+    margin-bottom: 15px;
   }
 }
 

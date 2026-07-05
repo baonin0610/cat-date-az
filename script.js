@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --- DOM Elements ---
   const introScreen = document.getElementById('intro-screen');
+  const videoScreen = document.getElementById('video-screen');
   const plannerScreen = document.getElementById('planner-screen');
   const successScreen = document.getElementById('success-screen');
   
@@ -203,10 +204,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        // Fade screens
+        // Fade screens to Video Screen first
         if (introScreen) introScreen.classList.remove('active');
         setTimeout(() => {
-          if (plannerScreen) plannerScreen.classList.add('active');
+          if (videoScreen) videoScreen.classList.add('active');
+          
+          // Autoplay video since it's triggered by user interaction
+          const birthdayVideo = document.getElementById('birthday-video');
+          if (birthdayVideo) {
+            try {
+              birthdayVideo.play();
+            } catch (playErr) {
+              console.warn('Autoplay blocked or failed:', playErr);
+            }
+          }
         }, 300);
       } catch (err) {
         console.error('Screen transition failed:', err);
@@ -421,6 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Switch screen
       if (successScreen) successScreen.classList.remove('active');
+      if (videoScreen) videoScreen.classList.remove('active');
       setTimeout(() => {
         if (introScreen) introScreen.classList.add('active');
       }, 300);
@@ -582,6 +594,27 @@ document.addEventListener('DOMContentLoaded', () => {
     btnPrintCard.addEventListener('click', () => {
       // Trigger print dialog
       window.print();
+    });
+  }
+
+  // Video screen button to Planner screen
+  const btnNextPlanner = document.getElementById('btn-next-planner');
+  if (btnNextPlanner) {
+    btnNextPlanner.addEventListener('click', () => {
+      // Pause video when leaving screen
+      const birthdayVideo = document.getElementById('birthday-video');
+      if (birthdayVideo) {
+        try {
+          birthdayVideo.pause();
+        } catch (e) {
+          console.warn('Video pause failed:', e);
+        }
+      }
+      
+      if (videoScreen) videoScreen.classList.remove('active');
+      setTimeout(() => {
+        if (plannerScreen) plannerScreen.classList.add('active');
+      }, 300);
     });
   }
 });
