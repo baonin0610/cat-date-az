@@ -45,7 +45,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, .font-cute {
-  font-family: 'Fredoka', cursive, sans-serif;
+  font-family: 'Nunito', cursive, sans-serif;
   font-weight: 600;
 }
 
@@ -106,7 +106,7 @@ header {
   gap: 8px;
   font-weight: 700;
   font-size: 14px;
-  font-family: 'Fredoka', sans-serif;
+  font-family: 'Nunito', sans-serif;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 }
@@ -187,7 +187,7 @@ header {
 }
 
 .video-title {
-  font-family: 'Fredoka', cursive, sans-serif;
+  font-family: 'Nunito', cursive, sans-serif;
   font-size: 22px;
   color: var(--primary-dark);
   margin-bottom: 5px;
@@ -390,7 +390,7 @@ header {
 }
 
 .btn {
-  font-family: 'Fredoka', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 18px;
   font-weight: 700;
   padding: 14px 28px;
@@ -467,7 +467,7 @@ header {
 
 .form-group label {
   display: block;
-  font-family: 'Fredoka', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 8px;
@@ -980,7 +980,7 @@ header {
   }
   
   .print-title {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 20px;
     color: #c9184a;
     margin-bottom: 8mm;
@@ -1023,7 +1023,7 @@ header {
   }
   
   .print-cover-title {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 24px;
     color: #c9184a;
     margin-bottom: 4mm;
@@ -1038,7 +1038,7 @@ header {
   }
   
   .print-footer {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 11px;
     color: #888888;
   }
@@ -1226,7 +1226,7 @@ header {
 }
 
 .birthday-title {
-  font-family: 'Fredoka', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 26px;
   color: #c9184a;
   margin-bottom: 15px;
