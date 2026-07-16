@@ -321,4 +321,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 300);
     });
   }
+  // --- Letter Carousel Logic ---
+  const slides = document.querySelectorAll('.love-letter-slide');
+  const dots = document.querySelectorAll('.carousel-dots .dot');
+  const btnPrev = document.getElementById('btn-letter-prev');
+  const btnNext = document.getElementById('btn-letter-next');
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    if (!slides.length) return;
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      if (dots[i]) dots[i].classList.remove('active');
+    });
+    
+    slides[index].classList.add('active');
+    if (dots[index]) dots[index].classList.add('active');
+    currentSlide = index;
+  }
+
+  if (btnPrev && btnNext) {
+    btnPrev.addEventListener('click', () => {
+      let prevIndex = currentSlide - 1;
+      if (prevIndex < 0) prevIndex = slides.length - 1;
+      showSlide(prevIndex);
+    });
+
+    btnNext.addEventListener('click', () => {
+      let nextIndex = currentSlide + 1;
+      if (nextIndex >= slides.length) nextIndex = 0;
+      showSlide(nextIndex);
+    });
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      showSlide(index);
+    });
+  });
 });

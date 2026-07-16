@@ -144,15 +144,39 @@
         <div class="gallery-item position-5-3" data-index="16"></div>
       </div>
 
-      <!-- Love Letter Container -->
-      <div class="love-letter">
-        <div class="love-letter-heart">🎂</div>
-        <p class="letter-text">
-          Gửi em, chúc em sinh nhật vui vẻ nhé! 🎈<br><br>
-          Chúc em bước sang tuổi mới luôn luôn xinh đẹp, rạng rỡ, ngập tràn niềm vui và gặt hái được thật nhiều thành công trong học tập cũng như công việc. 
-          Rất vui vì chúng mình luôn là những người bạn tốt đồng hành cùng nhau. 
-          Anh có làm một món quà nhỏ này để chúc mừng sinh nhật em, hy vọng em sẽ thích nó nhé! ✨😊
-        </p>
+      <!-- Love Letter Container (Sliding Card Carousel) -->
+      <div class="love-letter-carousel">
+        <button class="carousel-nav prev" id="btn-letter-prev" aria-label="Trang trước">&lsaquo;</button>
+        
+        <div class="love-letter-slides">
+          <!-- Slide 1 -->
+          <div class="love-letter-slide active">
+            <div class="love-letter-heart">🎂</div>
+            <p class="letter-text">
+              Gửi em, chúc em sinh nhật vui vẻ nhé! 🎈<br><br>
+              Chúc em bước sang tuổi mới luôn luôn xinh đẹp, rạng rỡ, ngập tràn niềm vui và gặt hái được thật nhiều thành công trong học tập cũng như công việc. 
+              Rất vui vì chúng mình luôn là những người bạn tốt đồng hành cùng nhau. 
+              Anh có làm một món quà nhỏ này để chúc mừng sinh nhật em, hy vọng em sẽ thích nó nhé! ✨😊
+            </p>
+          </div>
+          
+          <!-- Slide 2 -->
+          <div class="love-letter-slide">
+            <div class="love-letter-heart">✨</div>
+            <p class="letter-text">
+              Anh hy vọng rằng sau này, chúng ta sẽ gặp lại nhau vào một ngày nào đó, chúng ta sẽ thoải mái hơn và ngồi lại tâm sự về những chuyện chưa thể nói ra.<br><br>
+              Và lần nữa, anh xin chúc mừng sinh nhật Thùy Linh, cô gái của tháng 7, hãy giữ sự năng động đó và mọi điều tốt đẹp sẽ đến với em! Wish all the best for you &lt;3
+            </p>
+          </div>
+        </div>
+        
+        <button class="carousel-nav next" id="btn-letter-next" aria-label="Trang sau">&rsaquo;</button>
+        
+        <!-- Pagination Dots -->
+        <div class="carousel-dots">
+          <span class="dot active" data-slide="0"></span>
+          <span class="dot" data-slide="1"></span>
+        </div>
       </div>
 
       <!-- Action buttons -->

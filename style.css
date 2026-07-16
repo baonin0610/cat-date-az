@@ -1158,14 +1158,21 @@ header {
     border-width: 1.5px !important;
     border-radius: 8px !important;
   }
-  .love-letter {
-    padding: 16px 12px !important;
+  .love-letter-carousel {
+    padding: 16px 32px !important;
     margin: 15px 0 !important;
   }
   .letter-text {
     font-size: 13px !important;
     line-height: 1.6 !important;
   }
+  .carousel-nav {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 22px !important;
+  }
+  .carousel-nav.prev { left: 4px !important; }
+  .carousel-nav.next { right: 4px !important; }
 }
 
 /* --- Birthday Overlay & Popup --- */
@@ -1341,22 +1348,48 @@ header {
   fill: #ff4d6d;
 }
 
-/* Love Letter Box */
-.love-letter {
+/* Love Letter Carousel Styles */
+.love-letter-carousel {
+  position: relative;
   background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 100%);
   border: 2px dashed #ffb3c1;
   border-radius: 20px;
-  padding: 24px 20px;
+  padding: 24px 44px;
   margin: 25px 0;
   text-align: center;
   box-shadow: 0 8px 20px rgba(255, 77, 109, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.love-letter-slides {
+  width: 100%;
   position: relative;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.love-letter-slide {
+  display: none;
+  width: 100%;
+  text-align: center;
+  animation: fadeEffect 0.5s ease;
+}
+
+.love-letter-slide.active {
+  display: block;
 }
 
 .love-letter-heart {
   font-size: 28px;
   margin-bottom: 12px;
   animation: heartbeat-letter 1.5s infinite;
+  display: inline-block;
 }
 
 .letter-text {
@@ -1366,6 +1399,71 @@ header {
   line-height: 1.7;
   font-weight: 500;
   text-align: justify;
+}
+
+/* Carousel navigation arrows */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--primary-light);
+  color: var(--primary-dark);
+  font-size: 28px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  outline: none;
+  user-select: none;
+  padding: 0;
+}
+
+.carousel-nav.prev {
+  left: 8px;
+  padding-right: 2px;
+}
+
+.carousel-nav.next {
+  right: 8px;
+  padding-left: 2px;
+}
+
+.carousel-nav:hover {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+/* Carousel pagination dots */
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.carousel-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffccd5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-dots .dot.active {
+  background: var(--primary);
+  transform: scale(1.2);
+}
+
+@keyframes fadeEffect {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes heartbeat-letter {
