@@ -107,33 +107,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Dynamic Image Loader for Heart Grid ---
   const galleryItems = document.querySelectorAll('.gallery-item');
-  galleryItems.forEach(item => {
-    const index = item.getAttribute('data-index');
-    const img = document.createElement('img');
-    img.alt = `Photo ${index}`;
-    
-    // Attempt to load JPG first
+  const totalCells = galleryItems.length;
+  const validPhotos = [];
+  let checkedCount = 0;
+
+  for (let i = 1; i <= totalCells; i++) {
+    checkPhoto(i);
+  }
+
+  function checkPhoto(index) {
+    const img = new Image();
     img.src = `photos/photo${index}.jpg`;
     
     img.onload = () => {
-      item.appendChild(img);
+      validPhotos.push({ index, src: img.src });
+      checked();
     };
     
     img.onerror = () => {
-      // If JPG fails, try PNG
-      if (img.src.endsWith('.jpg')) {
-        // Change src to trigger a new load event
-        img.src = `photos/photo${index}.png`;
+      const pngImg = new Image();
+      pngImg.src = `photos/photo${index}.png`;
+      
+      pngImg.onload = () => {
+        validPhotos.push({ index, src: pngImg.src });
+        checked();
+      };
+      
+      pngImg.onerror = () => {
+        checked();
+      };
+    };
+  }
+
+  function checked() {
+    checkedCount++;
+    if (checkedCount === totalCells) {
+      distributePhotos();
+    }
+  }
+
+  function distributePhotos() {
+    validPhotos.sort((a, b) => a.index - b.index);
+
+    galleryItems.forEach((item, cellIndex) => {
+      if (validPhotos.length > 0) {
+        const photoInfo = validPhotos[cellIndex % validPhotos.length];
+        const img = document.createElement('img');
+        img.src = photoInfo.src;
+        img.alt = `Photo ${photoInfo.index}`;
+        item.appendChild(img);
       } else {
-        // If PNG also fails, fallback to SVG heart icon
         item.innerHTML = `
           <svg class="fallback-icon" viewBox="0 0 24 24">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
           </svg>
         `;
       }
-    };
-  });
+    });
+  }
 
   // --- Restart Action ---
   if (btnRestart) {
